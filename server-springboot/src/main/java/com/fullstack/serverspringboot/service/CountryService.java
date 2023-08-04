@@ -1,4 +1,4 @@
-package com.fullstack.serverspringboot.service.impl;
+package com.fullstack.serverspringboot.service;
 
 import java.util.UUID;
 
