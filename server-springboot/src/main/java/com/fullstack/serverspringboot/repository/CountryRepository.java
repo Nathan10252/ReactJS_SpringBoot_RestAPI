@@ -12,9 +12,9 @@ import com.fullstack.serverspringboot.entity.Country;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, UUID>{
-	@Query("select c from country c where c.id = :countryId")
+	@Query("select c from Country c where c.id = :countryId")
 	public Country findOneById(@Param("countryId") UUID id);
 	
-	@Query("select c from country c")
+	@Query("select c from Country c")
 	public List<Country> findAll();
 }
