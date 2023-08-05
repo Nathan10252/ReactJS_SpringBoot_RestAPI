@@ -1,5 +1,6 @@
 package com.fullstack.serverspringboot.service.impl;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public CountryDto getAllCountry() {
+	public List<CountryDto> getAllCountry() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -48,6 +49,18 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public void deleteCountry(UUID countryId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAllCountry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteListCountry(List<UUID> countryIds) {
 		// TODO Auto-generated method stub
 		
 	}

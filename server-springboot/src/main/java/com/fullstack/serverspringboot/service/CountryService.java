@@ -1,5 +1,6 @@
 package com.fullstack.serverspringboot.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -12,12 +13,16 @@ public interface CountryService {
 
 	public Page<CountryDto> pagingCountry(SearchObject searchObj);
 
-	public CountryDto getAllCountry();
+	public List<CountryDto> getAllCountry();
 
 	public CountryDto createCountry(CountryDto dto);
 
 	public CountryDto updateCountry(CountryDto dto);
 
 	public void deleteCountry(UUID countryId);
+	
+	public void deleteAllCountry();
+	
+	public void deleteListCountry(List<UUID> countryIds);
 
 }
