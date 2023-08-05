@@ -29,12 +29,16 @@ public class CountryController {
 	@GetMapping(value = "/get-by-id/{id}")
 	public ResponseEntity<CountryDto> getCountryById(@PathVariable UUID id) {
 		CountryDto res = mainService.getCountryById(id);
+		if (res == null)
+			return new ResponseEntity<CountryDto>(res, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<CountryDto>(res, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/paging-country")
 	public ResponseEntity<Page<CountryDto>> pagingCountry(@RequestBody SearchObject searchObj) {
 		Page<CountryDto> res = mainService.pagingCountry(searchObj);
+		if (res == null)
+			return new ResponseEntity<Page<CountryDto>>(res, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<Page<CountryDto>>(res, HttpStatus.OK);
 	}
 
@@ -47,12 +51,16 @@ public class CountryController {
 	@PostMapping(value = "/create-country")
 	public ResponseEntity<CountryDto> createCountry(@RequestBody CountryDto dto) {
 		CountryDto res = mainService.createCountry(dto);
+		if (res == null)
+			return new ResponseEntity<CountryDto>(res, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<CountryDto>(res, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/update-country")
 	public ResponseEntity<CountryDto> updateCountry(@RequestBody CountryDto dto) {
 		CountryDto res = mainService.updateCountry(dto);
+		if (res == null)
+			return new ResponseEntity<CountryDto>(res, HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<CountryDto>(res, HttpStatus.OK);
 	}
 
@@ -66,7 +74,7 @@ public class CountryController {
 		mainService.deleteAllCountry();
 	}
 
-	@DeleteMapping(value = "delete-list-country")
+	@DeleteMapping(value = "/delete-list-country")
 	public void deleteListCountry(@RequestBody List<UUID> countryIds) {
 		mainService.deleteListCountry(countryIds);
 	}
