@@ -15,19 +15,10 @@ public class CountryDto {
 	}
 
 	public CountryDto(Country entity) {
-		super();
 		this.id = entity.getId();
-		this.name = entity.getName();
 		this.code = entity.getCode();
+		this.name = entity.getName();
 		this.description = entity.getDescription();
-	}
-
-	public CountryDto(UUID id, String code, String name, String description) {
-		super();
-		this.id = id;
-		this.code = code;
-		this.name = name;
-		this.description = description;
 	}
 
 	public UUID getId() {

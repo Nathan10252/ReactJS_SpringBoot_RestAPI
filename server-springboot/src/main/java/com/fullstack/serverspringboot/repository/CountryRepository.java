@@ -9,5 +9,5 @@ import com.fullstack.serverspringboot.entity.Country;
 
 @Repository
 public interface CountryRepository extends JpaRepository<Country, UUID>{
-
+	
 }

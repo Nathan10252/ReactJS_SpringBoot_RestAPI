@@ -3,18 +3,21 @@ package com.fullstack.serverspringboot.service;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 
 import com.fullstack.serverspringboot.dto.CountryDto;
+import com.fullstack.serverspringboot.dto.SearchObject;
 
 public interface CountryService {
-	public ResponseEntity<CountryDto> saveCountry(CountryDto dto);
+	public CountryDto getCountryById(UUID countryId);
 
-	public ResponseEntity<CountryDto> updateCountry(CountryDto dto);
+	public Page<CountryDto> pagingCountry(SearchObject searchObj);
 
-	public void deleteCountryById(UUID countryId);
+	public CountryDto getAllCountry();
 
-	public ResponseEntity<CountryDto> getCountryById(UUID countryId);
+	public CountryDto createCountry(CountryDto dto);
 
-	public ResponseEntity<Page<CountryDto>> getAllCountry();
+	public CountryDto updateCountry(CountryDto dto);
+
+	public void deleteCountry(UUID countryId);
+
 }
