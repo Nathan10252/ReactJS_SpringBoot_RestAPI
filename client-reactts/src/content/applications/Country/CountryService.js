@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const ROOTPATH = 'http://localhost:8000';
 
-const COUNTRY_API_PATH = '/api/country';
+const COUNTRY_API_PATH = "/api/country";
 
 export function getCountryById(countryId) {
     return axios.get(ROOTPATH + COUNTRY_API_PATH + '/' + countryId);
