@@ -32,6 +32,6 @@ export function delteAllCountry() {
     return axios.delete(ROOTPATH + COUNTRY_API_PATH + '/delete-all-country');
 }
 
-export function createCountry(countryIds) {
+export function delteListCountry(countryIds) {
     return axios.delete(ROOTPATH + COUNTRY_API_PATH + '/delete-list-country', countryIds);
 }

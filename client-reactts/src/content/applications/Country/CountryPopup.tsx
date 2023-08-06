@@ -9,7 +9,11 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
+import { Country } from 'src/models/country';
+import { observer } from 'mobx-react';
+
+import { useStore } from 'src/Store';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -26,24 +30,41 @@ export interface DialogTitleProps {
     onClose: () => void;
 }
 
+interface Values {
+    code: string;
+    name: string;
+    description: string;
+}
+
 type CountryPopupProps = {
     openPopup: boolean,
     handleClosePopup: any
 }
 
 function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
+    const countryStore = useStore().countryStore;
+    const { createCountry } = countryStore;
+
+    function handleFormSubmit(values: Country, others: any) {
+        createCountry(values)
+            .then(() => {
+                others.setSubmitting(false);
+            })
+    }
 
     return (
         <Formik
-            initialValues={null}
-            onSubmit={(values: any) => {
-                console.log(values);
+            initialValues={{
+                code: '',
+                name: '',
+                description: '',
             }}
+            onSubmit={handleFormSubmit}
         >
-            {({ values, setFieldValue }) => (
+            {({ handleSubmit, isSubmitting }) => (
                 <Form autoComplete='off'>
                     <BootstrapDialog
-                        onClose={() => { }}
+                        // onClose={handleClosePopup}
                         aria-labelledby="customized-dialog-title"
                         open={openPopup}
                     >
@@ -53,37 +74,37 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
                         <DialogContent dividers>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
+                                    <label htmlFor="code">Code</label>
                                     <Field
-                                        component={TextField}
                                         name="code"
-                                        label="Code"
+                                        id="code"
+                                        focused='true'
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        label="Name"
-                                        focused
+                                    <label htmlFor="name">Name</label>
+                                    <Field
                                         name="name"
                                         id="name"
-                                        fullWidth
+                                        focused='true'
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        label="Description"
-                                        focused
-                                        fullWidth
+                                    <label htmlFor="description">Description</label>
+                                    <Field
                                         name="description"
                                         id="description"
+                                        focused='true'
                                     />
                                 </Grid>
                             </Grid>
                         </DialogContent>
                         <DialogActions>
-                            <Button type="submit" onClick={() => console.log(values)}>
-                                Save changes
-                            </Button>
+                            <Form onSubmit={handleSubmit}>
+                                <Button type="submit" disabled={isSubmitting}>
+                                    Save changes
+                                </Button>
+                            </Form>
                         </DialogActions>
                     </BootstrapDialog>
                 </Form>
@@ -92,7 +113,7 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
     );
 }
 
-export default React.memo(CountryPopup);
+export default React.memo(observer(CountryPopup));
 
 function BootstrapDialogTitle(props: DialogTitleProps) {
     const { children, onClose, ...other } = props;

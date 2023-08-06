@@ -1,5 +1,4 @@
-import { makeObservable, observable, computed, action } from 'mobx';
-import { observer } from 'mobx-react-lite';
+import { makeObservable, makeAutoObservable } from 'mobx';
 import { toast } from 'react-toastify';
 
 import {
@@ -13,12 +12,12 @@ import {
 }
   from './CountryService';
 
-class CountryStore {
+export default class CountryStore {
   selectedCountry = null;
   listCountries = null;
 
   constructor() {
-    makeObservable(this);
+    makeAutoObservable(this);
   }
 
   createCountry = async country => {

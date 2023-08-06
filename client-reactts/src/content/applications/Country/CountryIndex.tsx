@@ -68,8 +68,8 @@ function CountryIndex() {
     const [openPopup, setOpenPoup] = useState(false);
 
     function handleOnClickCreateCountry() {
-        // console.log('clciekd')
-        setOpenPoup(true);
+        // console.log('clicked')
+        setOpenPoup(true)
         // toast.success("Install react toastify success");
     }
 
