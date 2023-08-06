@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ROOTPATH = 'localhost:8000';
+const ROOTPATH = 'http://localhost:8000';
 
 const COUNTRY_API_PATH = '/api/country';
 
