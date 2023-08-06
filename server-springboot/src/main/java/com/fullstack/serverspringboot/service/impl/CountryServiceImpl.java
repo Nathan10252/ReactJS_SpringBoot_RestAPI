@@ -47,8 +47,8 @@ public class CountryServiceImpl implements CountryService {
 		if (pageIndex < 0)
 			pageIndex = 0;
 
-		String queryCount = "select count(c.id) from country c";
-		String query = "select c from country c";
+		String queryCount = "select count(c.id) from Country c ";
+		String query = "select c from Country c ";
 
 		String keyword = null;
 		if (searchObj.getKeyword() != null) {
