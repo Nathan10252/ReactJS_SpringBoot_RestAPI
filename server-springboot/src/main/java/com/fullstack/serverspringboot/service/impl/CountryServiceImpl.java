@@ -51,15 +51,15 @@ public class CountryServiceImpl implements CountryService {
 		String queryCount = "select count(c.id) from Country c ";
 		String query = "select c from Country c ";
 
-		String keyword = null;
+		String keyword = "";
 		if (searchObj.getKeyword() != null) {
 			keyword = searchObj.getKeyword().trim();
 		}
 
 		String whereClause = "";
-		if (StringUtils.hasText(keyword)) {
-			whereClause += "where c.name like :keyword or c.code like :keyword";
-		}
+//		if (StringUtils.hasText(keyword)) {
+		whereClause += "where c.name like :keyword or c.code like :keyword";
+//		}
 
 		query += whereClause;
 		queryCount += whereClause;
@@ -67,10 +67,10 @@ public class CountryServiceImpl implements CountryService {
 		Query sql = manager.createQuery(query);
 		Query sqlCount = manager.createQuery(queryCount);
 
-		if (keyword != null) {
-			sql.setParameter("keyword", '%' + keyword + '%');
-			sql.setParameter("keyword", '%' + keyword + '%');
-		}
+//		if (keyword != null) {
+		sql.setParameter("keyword", '%' + keyword + '%');
+		sqlCount.setParameter("keyword", '%' + keyword + '%');
+//		}
 
 		int startPosition = pageIndex * pageSize;
 		sql.setFirstResult(startPosition);
@@ -112,6 +112,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
+	@Transactional
 	public CountryDto updateCountry(CountryDto dto) {
 		System.out.println(dto.getId());
 		if (dto == null || dto.getId() == null)
@@ -143,11 +144,13 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteAllCountry() {
 		mainRepo.deleteAll();
 	}
 
 	@Override
+	@Transactional
 	public void deleteListCountry(List<UUID> countryIds) {
 		if (countryIds == null)
 			return;
