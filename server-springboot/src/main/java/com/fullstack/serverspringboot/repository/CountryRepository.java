@@ -3,6 +3,8 @@ package com.fullstack.serverspringboot.repository;
 import java.util.List;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,8 @@ public interface CountryRepository extends JpaRepository<Country, UUID>{
 	
 	@Query("select c from Country c")
 	public List<Country> findAll();
+
+	@Transactional
+	@Query("delete from Country entity where entity.id = :countryId")
+	public void deleteById(@Param("countryId") UUID countryId);
 }

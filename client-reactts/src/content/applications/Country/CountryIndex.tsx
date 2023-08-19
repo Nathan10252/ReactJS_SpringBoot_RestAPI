@@ -24,39 +24,39 @@ import { Typography, Button } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { toast } from 'react-toastify';
 import CountryPopup from './CountryPopup';
-
+import { useStore } from 'src/Store';
 
 function CountryIndex() {
     const data: Country[] = [
         {
             id: '1',
-            code: 'VN',
-            name: 'Viet Nam',
-            description: 'Demo'
+            code: 'VN1',
+            name: 'Viet Nam1',
+            description: 'Demo1'
         },
         {
-            id: '1',
-            code: 'VN',
-            name: 'Viet Nam',
-            description: 'Demo'
+            id: '2',
+            code: 'VN2',
+            name: 'Viet Nam2',
+            description: 'Demo2'
         },
         {
-            id: '1',
-            code: 'VN',
-            name: 'Viet Nam',
-            description: 'Demo'
+            id: '3',
+            code: 'VN3',
+            name: 'Viet Nam3',
+            description: 'Demo3'
         },
         {
-            id: '1',
-            code: 'VN',
-            name: 'Viet Nam',
-            description: 'Demo'
+            id: '4',
+            code: 'VN4',
+            name: 'Viet Nam4',
+            description: 'Demo4'
         },
         {
-            id: '1',
-            code: 'VN',
-            name: 'Viet Nam',
-            description: 'Demo'
+            id: '5',
+            code: 'VN5',
+            name: 'Viet Nam5',
+            description: 'Demo5'
         }
     ];
 
@@ -65,12 +65,21 @@ function CountryIndex() {
         avatar: '/static/images/avatars/1.jpg'
     };
 
-    const [openPopup, setOpenPoup] = useState(false);
 
+    const [openPopup, setOpenPoup] = useState(false);
     function handleOnClickCreateCountry() {
-        // console.log('clicked')
+        console.log('clicked')
         setOpenPoup(true)
         // toast.success("Install react toastify success");
+    }
+    const countryStore = useStore().countryStore;
+    const { createCountry, getAllCountry } = countryStore;
+    function handleFormSubmit(values: Country, others: any) {
+        createCountry(values)
+            .then(() => {
+                others.setSubmitting(false);
+                getAllCountry();
+            })
     }
 
     return (
@@ -109,7 +118,7 @@ function CountryIndex() {
                     spacing={3}
                 >
                     <Grid item xs={12}>
-                        <CountryTable data={data} />
+                        <CountryTable />
                     </Grid>
                 </Grid>
             </Container>
@@ -119,6 +128,7 @@ function CountryIndex() {
                 handleClosePopup={() => {
                     setOpenPoup(false);
                 }}
+                // handleFormSubmit={() => handleFormSubmit}
             />
         </>
     );

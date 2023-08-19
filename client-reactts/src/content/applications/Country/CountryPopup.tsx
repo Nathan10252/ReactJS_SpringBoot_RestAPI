@@ -30,26 +30,29 @@ export interface DialogTitleProps {
     onClose: () => void;
 }
 
-interface Values {
-    code: string;
-    name: string;
-    description: string;
-}
+// interface Values {
+//     code: string;
+//     name: string;
+//     description: string;
+// }
 
 type CountryPopupProps = {
     openPopup: boolean,
-    handleClosePopup: any
+    handleClosePopup: any,
+    // handleFormSubmit: any
 }
 
 function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
     const countryStore = useStore().countryStore;
-    const { createCountry } = countryStore;
-
+    const { createCountry, getAllCountry } = countryStore;
     function handleFormSubmit(values: Country, others: any) {
         createCountry(values)
             .then(() => {
-                others.setSubmitting(false);
+                // others.setSubmitting(false);
+                getAllCountry();
+                handleClosePopup();
             })
+        // handleClosePopup
     }
 
     return (
@@ -61,7 +64,7 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
             }}
             onSubmit={handleFormSubmit}
         >
-            {({ handleSubmit, isSubmitting }) => (
+            {({ isSubmitting }) => (
                 <Form autoComplete='off'>
                     <BootstrapDialog
                         // onClose={handleClosePopup}
@@ -74,15 +77,22 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
                         <DialogContent dividers>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <label htmlFor="code">Code</label>
+                                    {/* <TextField
+                                        required
+                                        id='code'
+                                        name='code'
+                                        label='Code'
+                                    /> */}
+                                    <label htmlFor="code">Code</label><br />
                                     <Field
+                                        required
                                         name="code"
                                         id="code"
                                         focused='true'
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <label htmlFor="name">Name</label>
+                                    <label htmlFor="name">Name</label><br />
                                     <Field
                                         name="name"
                                         id="name"
@@ -90,17 +100,18 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <label htmlFor="description">Description</label>
+                                    <label htmlFor="description">Description</label><br />
                                     <Field
                                         name="description"
                                         id="description"
                                         focused='true'
+
                                     />
                                 </Grid>
                             </Grid>
                         </DialogContent>
                         <DialogActions>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={() => handleFormSubmit}>
                                 <Button type="submit" disabled={isSubmitting}>
                                     Save changes
                                 </Button>

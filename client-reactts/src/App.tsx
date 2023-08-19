@@ -9,7 +9,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { storeContext as StoreContext, store } from './Store';
 function App() {
   const content = useRoutes(router);
-
   return (
     <StoreContext.Provider value={store}>
       <ThemeProvider>

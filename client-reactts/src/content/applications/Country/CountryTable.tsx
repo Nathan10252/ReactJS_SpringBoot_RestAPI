@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
@@ -17,12 +17,32 @@ import {
 import Footer from 'src/components/Footer';
 import CountryTableRow from './CountryTableRow';
 import { Country } from 'src/models/country';
+import { useStore } from 'src/Store';
+import { toast } from 'react-toastify';
+import { observer } from 'mobx-react';
 
-type CountryTableProps = {
-    data: any
-};
+// const ROOTPATH = 'http://localhost:8000';
 
-function CountryTable({ data }: CountryTableProps) {
+// const COUNTRY_API_PATH = "/api/country";
+
+// const config = {
+//     headers: {
+//       "Access-Control-Allow-Origin": "*",
+//       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+//     }
+//   };
+// type CountryTableProps = {
+//     data: any
+// };{ data }: CountryTableProps
+
+function CountryTable() {
+    const countryStore = useStore().countryStore;
+    const { getAllCountry, listCountries } = countryStore;
+    const [datas, setData] = useState([]);
+    useEffect(() => {
+        getAllCountry();
+    }, [])
+
 
     return (
         <>
@@ -45,7 +65,7 @@ function CountryTable({ data }: CountryTableProps) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((country, index) => {
+                        {listCountries.map((country: Country, index: any) => {
                             return (
                                 <CountryTableRow key={index} country={country} />
                             );
@@ -57,7 +77,10 @@ function CountryTable({ data }: CountryTableProps) {
                 <TablePagination
                     component="div"
                     count={10}
-                    onPageChange={() => console.log("changed")}
+                    onPageChange={() => {
+
+                        console.log("changed")
+                    }}
                     onRowsPerPageChange={() => console.log("changed")}
                     page={0}
                     rowsPerPage={10}
@@ -68,4 +91,4 @@ function CountryTable({ data }: CountryTableProps) {
     );
 }
 
-export default memo(CountryTable);
+export default memo(observer(CountryTable));

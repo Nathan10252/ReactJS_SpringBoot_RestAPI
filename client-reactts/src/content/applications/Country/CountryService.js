@@ -28,7 +28,7 @@ export function deleteCountry(countryId) {
     return axios.delete(ROOTPATH + COUNTRY_API_PATH + '/delete-country/' + countryId);
 }
 
-export function delteAllCountry() {
+export function deleteAllCountry() {
     return axios.delete(ROOTPATH + COUNTRY_API_PATH + '/delete-all-country');
 }
 

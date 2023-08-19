@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import {
   getCountryById,
   createCountry,
-  delteAllCountry,
+  deleteAllCountry,
   deleteCountry,
   getAllCountry,
   pagingCountry,
@@ -14,7 +14,7 @@ import {
 
 export default class CountryStore {
   selectedCountry = null;
-  listCountries = null;
+  listCountries = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -56,12 +56,25 @@ export default class CountryStore {
   getAllCountry = async () => {
     return await getAllCountry()
       .then((data) => {
-        this.listCountries = data;
+        this.listCountries = data.data;
+        // console.log(data.data);
+        // console.log(this.listCountries);
       })
       .catch(error => {
         console.error(error);
         toast.error("Get data fail");
       })
+  }
+  
+  deleteAllCountry = async () => {
+    return await deleteAllCountry()
+    .then(() => {
+      toast.success("Delete all country successfully!");
+    })
+    .catch(error => {
+      console.log(error);
+      toast.error("Delete all country fail")
+    })
   }
 
   deleteCountry = async countryId => {

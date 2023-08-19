@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -84,7 +85,6 @@ public class CountryServiceImpl implements CountryService {
 		for (Country entity : entities) {
 			data.add(new CountryDto(entity));
 		}
-
 		return new PageImpl<CountryDto>(data, pageable, numberResult);
 	}
 
@@ -95,6 +95,7 @@ public class CountryServiceImpl implements CountryService {
 		for (Country entity : entities) {
 			data.add(new CountryDto(entity));
 		}
+		// System.out.println("create data");
 		return data;
 	}
 
@@ -112,26 +113,33 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public CountryDto updateCountry(CountryDto dto) {
+		System.out.println(dto.getId());
 		if (dto == null || dto.getId() == null)
 			return null;
+		// System.out.println("cathced");
 		Country entity = mainRepo.findOneById(dto.getId());
+		// System.out.println("cathced 2" + entity.getCode() + entity.getName());
 		if (entity == null)
 			return null;
 		entity.setCode(dto.getCode());
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
+		// System.out.println("cathced 3");
 		Country response = mainRepo.save(entity);
-		return new CountryDto(entity);
+		return new CountryDto(response);
 	}
 
 	@Override
+	@Transactional
 	public void deleteCountry(UUID countryId) {
 		if (countryId == null)
-			return;
+		return;
 		Country entity = mainRepo.findOneById(countryId);
+		System.out.println(countryId);
+		// System.out.println(entity);
 		if (entity == null)
 			return;
-		mainRepo.delete(entity);
+		mainRepo.deleteById(entity.getId());
 	}
 
 	@Override
