@@ -25,6 +25,8 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { toast } from 'react-toastify';
 import CountryPopup from './CountryPopup';
 import { useStore } from 'src/Store';
+import { observer } from 'mobx-react';
+
 
 function CountryIndex() {
     const data: Country[] = [
@@ -67,20 +69,11 @@ function CountryIndex() {
 
 
     const [openPopup, setOpenPoup] = useState(false);
-    function handleOnClickCreateCountry() {
-        console.log('clicked')
+    function openAPopup() {
         setOpenPoup(true)
-        // toast.success("Install react toastify success");
     }
     const countryStore = useStore().countryStore;
     const { createCountry, getAllCountry } = countryStore;
-    function handleFormSubmit(values: Country, others: any) {
-        createCountry(values)
-            .then(() => {
-                others.setSubmitting(false);
-                getAllCountry();
-            })
-    }
 
     return (
         <>
@@ -101,7 +94,7 @@ function CountryIndex() {
                         <Button
                             sx={{ mt: { xs: 2, md: 0 } }}
                             variant="contained"
-                            onClick={handleOnClickCreateCountry}
+                            onClick={openAPopup}
                             startIcon={<AddTwoToneIcon fontSize="small" />}
                         >
                             Create country
@@ -124,14 +117,29 @@ function CountryIndex() {
             </Container>
             <Footer />
             <CountryPopup
+                header='Create Country'
+                initialValue={
+                    {
+                        code: '',
+                        name: '',
+                        description: '',
+                    }
+                }
                 openPopup={openPopup}
                 handleClosePopup={() => {
                     setOpenPoup(false);
                 }}
-                // handleFormSubmit={() => handleFormSubmit}
+                handleFormSubmit={(values: Country, others: any) => {
+                    createCountry(values)
+                        .then(() => {
+                            others.setSubmitting(false);
+                            getAllCountry();
+                            setOpenPoup(false);
+                        })
+                }}
             />
         </>
     );
 }
 
-export default memo(CountryIndex);
+export default memo(observer(CountryIndex));

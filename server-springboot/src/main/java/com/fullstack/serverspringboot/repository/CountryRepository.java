@@ -20,7 +20,7 @@ public interface CountryRepository extends JpaRepository<Country, UUID>{
 	@Query("select c from Country c")
 	public List<Country> findAll();
 
-	@Transactional
-	@Query("delete from Country entity where entity.id = :countryId")
-	public void deleteById(@Param("countryId") UUID countryId);
+	// @Transactional
+	// @Query("delete from Country entity where entity.id = :countryId")
+	public void deleteById( UUID countryId);
 }

@@ -37,52 +37,37 @@ export interface DialogTitleProps {
 // }
 
 type CountryPopupProps = {
+    header: string,
+    initialValue: object,
     openPopup: boolean,
     handleClosePopup: any,
-    // handleFormSubmit: any
+    // initialValues: any,
+    handleFormSubmit: any
 }
 
-function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
+function CountryPopup({ header, initialValue, openPopup, handleClosePopup, handleFormSubmit }: CountryPopupProps) {
     const countryStore = useStore().countryStore;
     const { createCountry, getAllCountry } = countryStore;
-    function handleFormSubmit(values: Country, others: any) {
-        createCountry(values)
-            .then(() => {
-                // others.setSubmitting(false);
-                getAllCountry();
-                handleClosePopup();
-            })
-        // handleClosePopup
-    }
 
     return (
+
         <Formik
-            initialValues={{
-                code: '',
-                name: '',
-                description: '',
-            }}
+            initialValues={ initialValue}
             onSubmit={handleFormSubmit}
         >
             {({ isSubmitting }) => (
-                <Form autoComplete='off'>
+                <Form autoComplete='off' >
                     <BootstrapDialog
-                        // onClose={handleClosePopup}
+                        onClose={handleClosePopup}
                         aria-labelledby="customized-dialog-title"
                         open={openPopup}
                     >
                         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClosePopup}>
-                            Country
+                            {header}
                         </BootstrapDialogTitle>
                         <DialogContent dividers>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    {/* <TextField
-                                        required
-                                        id='code'
-                                        name='code'
-                                        label='Code'
-                                    /> */}
                                     <label htmlFor="code">Code</label><br />
                                     <Field
                                         required
@@ -111,16 +96,18 @@ function CountryPopup({ openPopup, handleClosePopup }: CountryPopupProps) {
                             </Grid>
                         </DialogContent>
                         <DialogActions>
-                            <Form onSubmit={() => handleFormSubmit}>
-                                <Button type="submit" disabled={isSubmitting}>
+                            <Form onSubmit={handleFormSubmit}>
+                                <Button type='submit'  disabled={isSubmitting}>
                                     Save changes
                                 </Button>
                             </Form>
                         </DialogActions>
                     </BootstrapDialog>
+
                 </Form>
             )}
         </Formik>
+
     );
 }
 

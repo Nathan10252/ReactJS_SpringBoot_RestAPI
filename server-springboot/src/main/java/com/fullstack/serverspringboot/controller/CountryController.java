@@ -68,6 +68,7 @@ public class CountryController {
 
 	@DeleteMapping(value = "/delete-country/{id}")
 	public void deleteCountry(@PathVariable UUID id) {
+		System.out.println("id " + id);
 		mainService.deleteCountry(id);
 	}
 

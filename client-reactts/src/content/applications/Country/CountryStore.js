@@ -59,6 +59,7 @@ export default class CountryStore {
         this.listCountries = data.data;
         // console.log(data.data);
         // console.log(this.listCountries);
+        toast.success('get all country success')
       })
       .catch(error => {
         console.error(error);

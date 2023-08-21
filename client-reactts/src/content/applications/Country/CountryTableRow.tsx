@@ -11,10 +11,12 @@ import {
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import countryStore from './CountryStore'
 import { useStore } from 'src/Store';
 import CountryPopup from './CountryPopup';
-import { Key } from '@mui/icons-material';
+import { observer } from 'mobx-react';
+
+// import { useConfirm } from "";
+
 
 type CountryTableRowProps = {
     country: Country
@@ -45,40 +47,39 @@ function CountryTableRow({ country }: CountryTableRowProps) {
     };
 
     const countryStore = useStore().countryStore;
-    const { deleteCountry, deleteAllCountry, updateCountry, getAllCountry } = countryStore;
+    const { deleteCountry, updateCountry, getAllCountry } = countryStore;
 
     function handleDeleteCountry() {
         deleteCountry(id)
-        .then(() => {
-            getAllCountry();
-        })
+            .then(() => {
+                getAllCountry();
+            })
         console.log(id);
 
     }
 
     const [openPopup, setOpenPoup] = useState(false);
-    function handleOnClickEditCountry() {
-        // console.log('clicked')
+    function handleOpenPopup() {
         setOpenPoup(true)
-        // toast.success("Install react toastify success");
     }
-
+    const isCountrySelected = selectedCountry.includes(id);
 
     return (
         <>
             <TableRow
                 hover
-                selected={false}
+                key={id}
+                selected={isCountrySelected}
             >
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"
-                        checked={false}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                            handleSelectOneCountry(event, country.id)
-                            // console.log("changed")
-                        }
-                        value={false}
+                        checked={isCountrySelected}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                            handleSelectOneCountry(event, id)
+                            // console.log(id);
+                        }}
+                        value={isCountrySelected}
                     />
                 </TableCell>
 
@@ -129,7 +130,7 @@ function CountryTableRow({ country }: CountryTableRowProps) {
                             }}
                             color="inherit"
                             size="small"
-                            onClick={handleOnClickEditCountry}
+                            onClick={handleOpenPopup}
                         >
                             <EditTwoToneIcon fontSize="small" />
                         </IconButton>
@@ -150,8 +151,30 @@ function CountryTableRow({ country }: CountryTableRowProps) {
                     </Tooltip>
                 </TableCell>
             </TableRow>
+            <CountryPopup
+                header='Edit Country'
+                initialValue={{
+                    code: code,
+                    name: name,
+                    description: description,
+                }}
+                openPopup={openPopup}
+                handleClosePopup={() => {
+                    setOpenPoup(false);
+                }}
+                handleFormSubmit={(values: Country, others: any) => {
+                    const c = { id, ...values }
+                    updateCountry(c)
+                        .then(() => {
+                            others.setSubmitting(false);
+                            getAllCountry();
+                            setOpenPoup(false);
+                        })
+
+                }}
+            />
         </>
     );
 }
 
-export default memo(CountryTableRow);
+export default memo(observer(CountryTableRow));
