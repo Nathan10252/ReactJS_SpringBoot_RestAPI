@@ -103,7 +103,6 @@ function CountryPopup({ header, initialValue, openPopup, handleClosePopup, handl
                             </Form>
                         </DialogActions>
                     </BootstrapDialog>
-
                 </Form>
             )}
         </Formik>
