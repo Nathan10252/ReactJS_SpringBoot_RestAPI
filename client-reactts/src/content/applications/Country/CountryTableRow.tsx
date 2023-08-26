@@ -14,6 +14,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { useStore } from 'src/Store';
 import CountryPopup from './CountryPopup';
 import { observer } from 'mobx-react';
+import AlertDialog from 'src/components/Dialog/alertDialog';
 
 // import { useConfirm } from "";
 
@@ -52,10 +53,9 @@ function CountryTableRow({ country }: CountryTableRowProps) {
     function handleDeleteCountry() {
         deleteCountry(id)
             .then(() => {
+                setOpenAlertDialog(false);
                 getAllCountry();
             })
-        console.log(id);
-
     }
 
     const [openPopup, setOpenPoup] = useState(false);
@@ -63,6 +63,11 @@ function CountryTableRow({ country }: CountryTableRowProps) {
         setOpenPoup(true)
     }
     const isCountrySelected = selectedCountry.includes(id);
+
+    const [openAlertDialog, setOpenAlertDialog] = useState(false);
+    function handleOpenAlertDialog() {
+        setOpenAlertDialog(true)
+    }
 
     return (
         <>
@@ -135,7 +140,7 @@ function CountryTableRow({ country }: CountryTableRowProps) {
                             <EditTwoToneIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Delete country" arrow onClick={handleDeleteCountry}>
+                    <Tooltip title="Delete country" arrow onClick={handleOpenAlertDialog}>
                         <IconButton
 
                             sx={{
@@ -170,8 +175,17 @@ function CountryTableRow({ country }: CountryTableRowProps) {
                             getAllCountry();
                             setOpenPoup(false);
                         })
-
+                    console.log(id);
                 }}
+            />
+            <AlertDialog
+                header='Delete Country'
+                body='Bạn chắc chắn muốn xóa?'
+                openAlertDialog = {openAlertDialog}
+                handleClose={() => {
+                    setOpenAlertDialog(false);
+                }}
+                handleClickAgree={handleDeleteCountry}
             />
         </>
     );
