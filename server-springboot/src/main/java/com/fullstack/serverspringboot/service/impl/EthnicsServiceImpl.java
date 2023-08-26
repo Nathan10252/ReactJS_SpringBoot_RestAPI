@@ -48,15 +48,15 @@ public class EthnicsServiceImpl implements EthnicsService {
 		if (pageIndex < 0)
 			pageIndex = 0;
 
-		String q = "select e from Ethnics ";
-		String qCount = "select count(e.id) from Ethnics ";
+		String q = "select e from Ethnics e ";
+		String qCount = "select count(e.id) from Ethnics e ";
 
 		String whereClause = "";
 		String keyword = "";
 
 		if (searchObj.getKeyword() != null) {
 			keyword = searchObj.getKeyword().trim();
-			whereClause += "where e.code = :keyword or e.name = :keyword or e.description = :keyword";
+			whereClause += "where e.code like :keyword or e.name like :keyword or e.description like :keyword";
 		}
 
 		q += whereClause;
@@ -64,6 +64,11 @@ public class EthnicsServiceImpl implements EthnicsService {
 
 		Query sql = manager.createQuery(q);
 		Query sqlCount = manager.createQuery(qCount);
+		
+		if (searchObj.getKeyword() != null) {
+			sql.setParameter("keyword", '%' + searchObj.getKeyword() + '%');
+			sqlCount.setParameter("keyword", '%' + searchObj.getKeyword() + '%');
+		}
 
 		Pageable pageable = PageRequest.of(pageIndex, pageSize);
 
